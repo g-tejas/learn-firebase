@@ -29,15 +29,18 @@ export const signInUser = async (email, password) => {
 
 export const initUser = async () => {
     const auth = getAuth();
+    const firebaseUser = useUserStore();
+    firebaseUser.credentials = auth.currentUser;
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in, see docs for a list of available properties
             // https://firebase.google.com/docs/reference/js/firebase.User
-            const uid = user.uid;
-            console.log(uid)
+            console.log("Auth state changed: ", user);
         } else {
             // User is signed out
+            console.log("Auth state changed: ", user);
         }
+        firebaseUser.credentials = user;
     });
 
 }

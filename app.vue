@@ -1,28 +1,29 @@
 <template>
   <div>
-    <v-btn @click="signIn">Sign In</v-btn>
-    <v-btn @click="signOut">Sign Out</v-btn>
-    <pre>
-      {{ credentials }}
-    </pre>
+    <v-btn @click="signIn" v-if="!firebaseUser.credentials">Sign In</v-btn>
+    <v-btn @click="signOut" v-if="firebaseUser.credentials">Sign Out</v-btn>
+    <div v-if="firebaseUser.credentials">
+      <pre>
+        {{ firebaseUser.credentials }}
+      </pre>
+    </div>
+    <div v-else>
+      User is signed out
+    </div>
   </div>
 </template>
 
-<script setup>
-const credentials = ref();
+<script setup lang="ts">
+const firebaseUser = useUserStore()
 
 const signIn = async () => {
   const email = "tejas@gmail.com";
   const password = "123456";
-  credentials.value = await signInUser(email, password);
-  console.log("Credentials: ", credentials)
+  firebaseUser.credentials = await signInUser(email, password);
 }
 
 const signOut = async () => {
-  const email = "tejas@gmail.com";
-  const password = "123456";
-  credentials.value = await signOutUser();
-  console.log("Credentials: ", credentials) // this will always show undefined because user is not signed i
+  firebaseUser.credentials = await signOutUser();
 }
 
 onMounted(async () => {

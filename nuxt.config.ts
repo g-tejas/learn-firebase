@@ -11,6 +11,9 @@ export default defineNuxtConfig({
             'process.env.DEBUG': false,
         },
     },
+    modules: [
+        ['@pinia/nuxt', { autoImports: ['defineStore'] }],
+    ],
     runtimeConfig: {
         // The private keys which are only available within server-side
         FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
